@@ -1,6 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
-using UsersBlazorApp.Data.Context;
+using UserBlazorApp.API.Services;
+using UsersBlazorApp.API.Context;
+using UsersBlazorApp.Data.Interfaces;
+using UsersBlazorApp.Data.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +16,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<UsersDbContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("ConStr")));
 
+builder.Services.AddScoped<IApiService<AspNetUsers>, UserService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -21,6 +26,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseHttpsRedirection();
 

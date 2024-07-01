@@ -1,0 +1,119 @@
+﻿@page "/Usuario/Index"
+
+@inject IClientService<AspNetUsers> userService
+@inject NavigationManager Navigation
+
+<PageTitle>Art&iacute;culo Index</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header text-center">
+			<div class="bg-primary text-white">
+				<h3><strong>Listado de Art&iacute;culos</strong></h3>
+			</div>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			@*Labels*@
+			<div class="row">
+				<div class="col-3">
+					<label class="form-label" for="Filtro"><strong>Filtrar por</strong></label>
+				</div>
+				<div class="col-4">
+					<label class="form-label" for="ValorFiltro"><strong>B&uacute;squeda</strong></label>
+				</div>
+			</div>
+			<div class="row">
+				@*Filtro*@
+				<div class="col-3">
+					<InputSelect class="form-select" @bind-Value="filtro">
+						<option value="" selected>Elija una opción</option>
+						<option value="id"><strong>Id</strong></option>
+						<option value="descripcion"><strong>Descripci&oacute;n</strong></option>
+					</InputSelect>
+				</div>
+				@*Búsqueda*@
+				<div class="col-4">
+					<div class="input-group">
+						<input class="form-control" @bind="valorFiltro" placeholder="Buscar" />
+						<button type="button" class="btn btn-outline-primary bi bi-search" @* @onclick="Buscar" *@></button>
+					</div>
+				</div>
+				<div class="col-auto">
+					<button type="button" class="btn btn-outline-secondary bi bi-arrow-counterclockwise" @onclick="Restablecer"> Restablecer</button>
+				</div>
+				<div class="col text-end">
+					<button type="button" class="btn btn-outline-primary ms-2" @onclick="MostrarPantallaCrear">Crear</button>
+				</div>
+			</div>
+			@*Tabla*@
+			<div class="text-center mt-3">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>ArticuloId</th>
+							<th>Descripci&oacute;n</th>
+							<th>Costo</th>
+							<th>Ganancia</th>
+							<th>Precio</th>
+							<th>Observar</th>
+							<th>Editar</th>
+							<th>Eliminar</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var usuario in Usuarios) {
+							<tr>
+								<td>@usuario.Id</td>
+								<td>@usuario.UserName</td>
+								<td>@usuario.Email</td>
+								<td>@usuario.PasswordHash</td>
+								<td>@usuario.PhoneNumber</td>
+								<td>@usuario.LockoutEnd</td>
+								<td><button type="button" class="btn btn-outline-primary bi bi-eye-fill" @onclick="()=>MostrarPantallaObservar(usuario.Id)"></button></td>
+								<td><button type="button" class="btn btn-outline-warning bi bi-pencil-square" @onclick="()=>MostrarPantallaEditar(usuario.Id)"></button></td>
+								<td><button type="button" class="btn btn-outline-danger bi bi-trash2" @onclick="()=>MostrarPantallaEliminar(usuario.Id)"></button></td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<p><strong>Art&iacute;culos Agregados: </strong>@Usuarios.Count()</p>
+		</div>
+	</div>
+</div>
+
+@code {
+	public List<AspNetUsers> Usuarios = new List<AspNetUsers>();
+	private string filtro = "";
+	private string valorFiltro = "";
+
+	protected override async Task OnInitializedAsync() {
+		Usuarios = await userService.GetAllAsync();
+	}
+
+	public async Task Restablecer() {
+		filtro = string.Empty;
+		valorFiltro = string.Empty;
+		Usuarios = await userService.GetAllAsync();
+	}
+
+	public void MostrarPantallaCrear() {
+		Navigation.NavigateTo("/Usuario/Create");
+	}
+
+	public void MostrarPantallaObservar(int id) {
+		Navigation.NavigateTo($"/Usuario/Details/{id}");
+	}
+
+	public void MostrarPantallaEditar(int id) {
+		Navigation.NavigateTo($"/Usuario/Edit/{id}");
+	}
+
+	public void MostrarPantallaEliminar(int id) {
+		Navigation.NavigateTo($"/Usuario/Delete/{id}");
+	}
+}
