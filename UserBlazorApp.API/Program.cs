@@ -18,6 +18,13 @@ builder.Services.AddDbContext<UsersDbContext>(o => o.UseSqlServer(builder.Config
 
 builder.Services.AddScoped<IApiService<AspNetUsers>, UserService>();
 
+builder.Services.AddCors(options => {
+	options.AddPolicy("AllowAnyOrigin",
+		builder => builder.AllowAnyOrigin() // Allow any origin
+						  .AllowAnyMethod()
+						  .AllowAnyHeader());
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,7 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors("AllowAnyOrigin"); // Use the CORS policy
 
 app.UseHttpsRedirection();
 

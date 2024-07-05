@@ -23,7 +23,7 @@ public partial class UsersDbContext : DbContext
     {
         modelBuilder.Entity<AspNetUsers>(entity =>
         {
-            entity.HasMany(d => d.Role).WithMany(p => p.User)
+            entity.HasMany(d => d.Roles).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(
                     "AspNetUserRoles",
                     r => r.HasOne<AspNetRoles>().WithMany().HasForeignKey("RoleId"),

@@ -1,0 +1,66 @@
+﻿@page "/Usuario/Delete/{UsuarioId:int}"
+
+@inject IClientService<AspNetUsers> userService
+@inject NavigationManager Navigation
+
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header text-center">
+			<div class="bg-primary text-white">
+				<h3><strong>Eliminar Usuario</strong></h3>
+			</div>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			<div class="text-center">
+				<h4><strong>¿Est&aacute;s seguro de eliminar el usuario @Usuario.UserName</strong></h4>
+			</div>
+			<ul>
+				<li><strong>Id:</strong> @Usuario.Id</li>
+				<li><strong>Nombre de Usuario:</strong> @Usuario.UserName</li>
+				<li><strong>Email:</strong> @Usuario.Email</li>
+				<li><strong>PasswordHash:</strong> @Usuario.PasswordHash</li>
+				<li><strong>PhoneNumber:</strong> @Usuario.PhoneNumber</li>
+				<li><strong>LockoutEnd:</strong> @Usuario.LockoutEnd</li>
+			</ul>
+		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<div class="text-center">
+				<button class="btn btn-danger" @onclick="EliminarUsuario">Eliminar</button>
+				<button type="button" class="btn btn-primary" @onclick="Volver">Volver</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int UsuarioId { get; set; }
+
+	public AspNetUsers Usuario { get; set; } = new AspNetUsers();
+	public string Mensaje { get; set; } = string.Empty;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Usuario = await userService.GetByIdAsync(UsuarioId);
+	}
+
+	private async Task EliminarUsuario(){
+		var result = await userService.DeleteAsync(UsuarioId);
+
+		if (result != null) {
+			Mensaje = "Usuario Modificado  correctamente";
+			Usuario = new AspNetUsers();
+		}
+
+		else
+			Mensaje = "Error al Modificar el usuario";
+		
+	}
+
+	public void Volver(){
+		Navigation.NavigateTo("/Usuario/Index");
+	}
+}

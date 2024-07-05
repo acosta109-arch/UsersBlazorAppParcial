@@ -8,7 +8,7 @@ public class UsuarioService(HttpClient _httpClient) : IClientService<AspNetUsers
 {
 	public async Task<List<AspNetUsers>> GetAllAsync()
 	{
-		return (await _httpClient.GetFromJsonAsync<List<AspNetUsers>>("api/AspNetUsers"))!;
+		return await _httpClient.GetFromJsonAsync<List<AspNetUsers>>("api/AspNetUsers");
 	}
 
 	public async Task<AspNetUsers> GetByIdAsync(int id)
@@ -19,7 +19,7 @@ public class UsuarioService(HttpClient _httpClient) : IClientService<AspNetUsers
 	public async Task<AspNetUsers> AddAsync(AspNetUsers entity)
 	{
 		var response = await _httpClient.PostAsJsonAsync("api/AspNetUsers", entity);
-		return (await response.Content.ReadFromJsonAsync<AspNetUsers>())!;
+		return await response.Content.ReadFromJsonAsync<AspNetUsers>();
 	}
 
 	public async Task<bool> UpdateAsync(AspNetUsers entity)

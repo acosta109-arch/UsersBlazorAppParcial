@@ -9,7 +9,10 @@ namespace UserBlazorApp.API.Services;
 public class UserService(UsersDbContext Contexto) : IApiService<AspNetUsers>
 {
 	public async Task<List<AspNetUsers>> GetAllAsync() {
-		return await Contexto.AspNetUsers.ToListAsync();
+		return await Contexto.AspNetUsers
+		.Include(u => u.Roles)
+			.ThenInclude(r => r.AspNetRoleClaims)
+		.ToListAsync();
 	}
 
 	public async Task<AspNetUsers> GetByIdAsync(int id) {

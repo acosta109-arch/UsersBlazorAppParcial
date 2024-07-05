@@ -3,13 +3,13 @@
 @inject IClientService<AspNetUsers> userService
 @inject NavigationManager Navigation
 
-<PageTitle>Art&iacute;culo Index</PageTitle>
+<PageTitle>Usuario Index</PageTitle>
 <div class="container">
 	<div class="card shadow-lg">
 		@*Header*@
 		<div class="card-header text-center">
 			<div class="bg-primary text-white">
-				<h3><strong>Listado de Art&iacute;culos</strong></h3>
+				<h3><strong>Listado de usuarios</strong></h3>
 			</div>
 		</div>
 		@*Body*@
@@ -51,11 +51,12 @@
 				<table class="table table-bordered">
 					<thead>
 						<tr>
-							<th>ArticuloId</th>
-							<th>Descripci&oacute;n</th>
-							<th>Costo</th>
-							<th>Ganancia</th>
-							<th>Precio</th>
+							<th>Id</th>
+							<th>UserName</th>
+							<th>Email</th>
+							<th>PasswordHash</th>
+							<th>PhoneNumber</th>
+							<th>LockoutEnd</th>
 							<th>Observar</th>
 							<th>Editar</th>
 							<th>Eliminar</th>
@@ -81,13 +82,13 @@
 		</div>
 		@*Footer*@
 		<div class="card-footer">
-			<p><strong>Art&iacute;culos Agregados: </strong>@Usuarios.Count()</p>
+			<p><strong>Usuarios Agregados: </strong>@Usuarios.Count()</p>
 		</div>
 	</div>
 </div>
 
 @code {
-	public List<AspNetUsers> Usuarios = new List<AspNetUsers>();
+	public List<AspNetUsers> Usuarios { get; set; } = new List<AspNetUsers>();
 	private string filtro = "";
 	private string valorFiltro = "";
 

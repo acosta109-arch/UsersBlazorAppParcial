@@ -5,16 +5,15 @@ namespace UsersBlazorApp.Data.Models;
 
 public partial class AspNetRoles
 {
-    [Key]
-    public int Id { get; set; }
+	[Key]
+	public int Id { get; set; }
 
-    [StringLength(256)]
-    public string? Name { get; set; }
+	[StringLength(256)]
+	public string? Name { get; set; }
 
-    [InverseProperty("Role")]
-    public virtual ICollection<AspNetRoleClaims> AspNetRoleClaims { get; set; } = new List<AspNetRoleClaims>();
+	[InverseProperty("Role")]
+	public virtual ICollection<AspNetRoleClaims> AspNetRoleClaims { get; set; } = new List<AspNetRoleClaims>();
 
-    [ForeignKey("RoleId")]
-    [InverseProperty("Role")]
-    public virtual ICollection<AspNetUsers> User { get; set; } = new List<AspNetUsers>();
+	[InverseProperty("Roles")]
+	public virtual ICollection<AspNetUsers> Users { get; set; } = new List<AspNetUsers>();
 }
